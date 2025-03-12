@@ -1,40 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(MainApp());
+main() {
+  runApp(
+    GetMaterialApp(
+      initialRoute: "/",
+      getPages: [
+        GetPage(name: "/", page: () => HomeScreen()),
+        GetPage(name: "/notstarted", page: () => NotStartedScreen()),
+        GetPage(name: "/reading", page: () => ReadingScreen()),
+        GetPage(name: "/completed", page: () => CompletedScreen()),
+      ],
+    ),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  MainApp({super.key});
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Center(child: Text("Bookshelves"))),
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-        bottomNavigationBar: Container(
-          height: 50,
-          child: Center(
-            child: Row(children: [
-              OutlinedButton(
-                child: Text("To Read"),
-                onPressed: () {},
-              ),
-              ElevatedButton(
-                child: Text("Reading"),
-                onPressed: () {},
-              ),
-              OutlinedButton(
-                child: Text("Completed"),
-                onPressed: () {},
-              ),
-            ]),
-          ),
+    return Scaffold(
+      appBar: AppBar(title: Center(child: Text("Bookshelves"))),
+      body: Container(alignment: Alignment.center, child: Text('Hello World!')),
+      bottomNavigationBar: Container(
+        height: 50,
+        child: Center(
+          child: Row(children: [
+            OutlinedButton(
+              child: Text("Not Started"),
+              onPressed: () => Get.to(() => NotStartedScreen()),
+            ),
+            ElevatedButton(
+              child: Text("Reading"),
+              onPressed: () => Get.to(() => ReadingScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Completed"),
+              onPressed: () => Get.to(() => CompletedScreen()),
+            ),
+          ]),
         ),
       ),
+    );
+  }
+}
+
+class NotStartedScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(children: [
+        Center(child: Text("Not Started Screen")),
+        OutlinedButton(
+          child: Text("Back to Home Screen"),
+          onPressed: () => Get.to(() => HomeScreen()),
+        ),
+      ])
+    );
+  }
+}
+
+class ReadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(children: [
+        Center(child: Text("Reading Screen")),
+        OutlinedButton(
+          child: Text("Back to Home Screen"),
+          onPressed: () => Get.to(() => HomeScreen()),
+        ),
+      ])
+    );
+  }
+}
+
+class CompletedScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(children: [
+        Center(child: Text("Completed Screen")),
+        OutlinedButton(
+          child: Text("Back to Home Screen"),
+          onPressed: () => Get.to(() => HomeScreen()),
+        ),
+      ])
     );
   }
 }
