@@ -19,12 +19,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("Bookshelves"))),
-      body: Container(alignment: Alignment.center, child: Text('Hello World!')),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Center(child: Text("Bookshelves")),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(width: 300, child: Column(children: [Text("You have read: X")])),
+            Container(width: 300, child: Column(children: [Text("Books to read: Y")])),
+            Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+          ]
+        ),
+      ),
       bottomNavigationBar: Container(
         height: 50,
-        child: Center(
-          child: Row(children: [
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             OutlinedButton(
               child: Text("Not Started"),
               onPressed: () => Get.to(() => NotStartedScreen()),
@@ -37,7 +51,7 @@ class HomeScreen extends StatelessWidget {
               child: Text("Completed"),
               onPressed: () => Get.to(() => CompletedScreen()),
             ),
-          ]),
+          ]
         ),
       ),
     );
