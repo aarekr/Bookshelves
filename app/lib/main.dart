@@ -59,11 +59,28 @@ class HomeScreen extends StatelessWidget {
 }
 
 class NotStartedScreen extends StatelessWidget {
+  var booklist = [
+    Card(
+      child: ListTile(
+        //leading: Icon(Icons.),
+        title: Text("Clean Code"),
+        subtitle: Text("Robert C. Martin"),
+      ),
+    ),
+    Card(
+      child: ListTile(
+        //leading: Icon(Icons.),
+        title: Text("The Firm"),
+        subtitle: Text("John Grisham"),
+      ),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
         Center(child: Text("Not Started Screen")),
+        Column(children: booklist),
         OutlinedButton(
           child: Text("Back to Home Screen"),
           onPressed: () => Get.to(() => HomeScreen()),
