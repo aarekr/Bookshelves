@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 main() {
+  Get.lazyPut<BookListController>(() => BookListController());
   runApp(
     GetMaterialApp(
       initialRoute: "/",
@@ -15,7 +16,16 @@ main() {
   );
 }
 
+class BookListController {
+  var bookList = [
+    {'title': 'Book 1', 'author': 'Author 1', 'status': 'not started'},
+    {'title': 'Book 2', 'author': 'Author 2', 'status': 'reading'},
+    {'title': 'Book 3', 'author': 'Author 3', 'status': 'completed'},
+  ].obs;
+}
+
 class HomeScreen extends StatelessWidget {
+  final controller = Get.find<BookListController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +41,11 @@ class HomeScreen extends StatelessWidget {
             Container(width: 300, child: Column(children: [Text("You have read: X")])),
             Container(width: 300, child: Column(children: [Text("Books to read: Y")])),
             Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+            Container(width: 300, child: Column(children: [
+              Obx(() => Text('${controller.bookList[0]['title']} : ${controller.bookList[0]['author']}')),
+              Obx(() => Text('${controller.bookList[1]['title']} : ${controller.bookList[1]['author']}')),
+              Obx(() => Text('${controller.bookList[2]['title']} : ${controller.bookList[2]['author']}')),
+            ])),
           ]
         ),
       ),
