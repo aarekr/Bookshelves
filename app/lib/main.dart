@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+//import 'package:intl/intl.dart';
 
 main() {
   Get.lazyPut<BookListController>(() => BookListController());
@@ -95,6 +97,8 @@ class NotStartedScreen extends StatelessWidget {
     return Scaffold(
       body: Column(children: [
         Center(child: Text("Not Started Screen")),
+        FormWidget(),
+        const Divider(),
         Column(children: booklist),
         OutlinedButton(
           child: Text("Back to Home Screen"),
@@ -131,6 +135,62 @@ class CompletedScreen extends StatelessWidget {
           onPressed: () => Get.to(() => HomeScreen()),
         ),
       ])
+    );
+  }
+}
+
+class FormWidget extends StatelessWidget {
+  static final _formKey = GlobalKey<FormBuilderState>();
+  _add() {
+    _formKey.currentState?.saveAndValidate();
+    print(_formKey.currentState?.value);
+  }
+  _cancel() {
+    _formKey.currentState?.reset();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return FormBuilder(
+      key: _formKey,
+      child: Column(
+        children: [
+          Text("Add new book to reading list"),
+          FormBuilderTextField(
+            name: 'title',
+            decoration: InputDecoration(
+              hintText: 'Title',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          FormBuilderTextField(
+            name: 'author',
+            decoration: InputDecoration(
+              hintText: 'Author',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          FormBuilderCheckbox(
+            name: 'checkbox',
+            title: Text("Checkbox"),
+          ),
+          FormBuilderSwitch(
+            name: 'switch',
+            title: Text("Switch"),
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: _add,
+                child: Text("Add book"),
+              ),
+              ElevatedButton(
+                onPressed: _cancel,
+                child: Text("Cancel"),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
