@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-//import 'package:intl/intl.dart';
 
 main() {
   Get.lazyPut<BookListController>(() => BookListController());
@@ -24,6 +23,12 @@ class BookListController {
     {'title': 'Book 2', 'author': 'Author 2', 'status': 'reading'},
     {'title': 'Book 3', 'author': 'Author 3', 'status': 'completed'},
   ].obs;
+  void add(String title, String author) {
+    print("new book:");
+    var newBook = {'title': title, 'author': author, 'status': 'not started'};
+    print(newBook);
+    bookList.add(newBook);
+  }
 }
 
 class HomeScreen extends StatelessWidget {
@@ -47,6 +52,7 @@ class HomeScreen extends StatelessWidget {
               Obx(() => Text('${controller.bookList[0]['title']} : ${controller.bookList[0]['author']}')),
               Obx(() => Text('${controller.bookList[1]['title']} : ${controller.bookList[1]['author']}')),
               Obx(() => Text('${controller.bookList[2]['title']} : ${controller.bookList[2]['author']}')),
+              //Obx(() => Text('${controller.bookList[3]['title']} : ${controller.bookList[3]['author']}')),
             ])),
           ]
         ),
@@ -141,9 +147,13 @@ class CompletedScreen extends StatelessWidget {
 
 class FormWidget extends StatelessWidget {
   static final _formKey = GlobalKey<FormBuilderState>();
+  final bookListController = Get.find<BookListController>();
   _add() {
-    _formKey.currentState?.saveAndValidate();
-    print(_formKey.currentState?.value);
+    _formKey.currentState!.saveAndValidate();
+    print(_formKey.currentState!.value);
+    var title = _formKey.currentState?.value["title"];
+    var author = _formKey.currentState?.value["author"];
+    bookListController.add(title, author);
   }
   _cancel() {
     _formKey.currentState?.reset();

@@ -10,8 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.6
-  #intl: ">=0.19.0 <0.21.0"  # because of form
-  flutter_form_builder: ^7.7.0
+  flutter_form_builder: ^10.0.1
+  form_builder_validators: ^11.1.2
 
 dev_dependencies:
   flutter_test:
