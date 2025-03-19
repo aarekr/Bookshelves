@@ -33,6 +33,32 @@ class BookListController {
 
 class HomeScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
+  List<Obx> getBookList() {
+    var bookList = [
+                    Obx(() => Text('${controller.bookList[0]['title']} : ${controller.bookList[0]['author']}')),
+                    Obx(() => Text('${controller.bookList[1]['title']} : ${controller.bookList[1]['author']}')),
+                    Obx(() => Text('${controller.bookList[2]['title']} : ${controller.bookList[2]['author']}')),
+                  ];
+    return bookList;
+  }
+  int getNumberOfCompletedBooks() {
+    int number = 0;
+    for (var i=0; i<controller.bookList.length; i++) {
+      if(controller.bookList[i]['status'] == 'completed') {
+        number++;
+      }
+    }
+    return number;
+  }
+  int getNumberOfBooksToRead() {
+    int number = 0;
+    for (var i=0; i<controller.bookList.length; i++) {
+      if(controller.bookList[i]['status'] == 'not started') {
+        number++;
+      }
+    }
+    return number;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +71,10 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(width: 300, child: Column(children: [Text("You have read: X")])),
-            Container(width: 300, child: Column(children: [Text("Books to read: Y")])),
+            Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+            Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
             Container(width: 300, child: Column(children: [Text("You are currently reading")])),
-            Container(width: 300, child: Column(children: [
-              Obx(() => Text('${controller.bookList[0]['title']} : ${controller.bookList[0]['author']}')),
-              Obx(() => Text('${controller.bookList[1]['title']} : ${controller.bookList[1]['author']}')),
-              Obx(() => Text('${controller.bookList[2]['title']} : ${controller.bookList[2]['author']}')),
-              //Obx(() => Text('${controller.bookList[3]['title']} : ${controller.bookList[3]['author']}')),
-            ])),
+            Container(width: 300, child: Column(children: getBookList())),
           ]
         ),
       ),
