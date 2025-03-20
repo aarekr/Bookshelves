@@ -17,6 +17,11 @@ main() {
   );
 }
 
+class Breakpoints {
+  static const mobile = 600;
+  static const tablet = 900;
+}
+
 class BookListController {
   var bookList = [
     {'title': 'Book 1', 'author': 'Author 1', 'status': 'not started'},
@@ -66,17 +71,51 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Center(child: Text("Bookshelves")),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
-            Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
-            Container(width: 300, child: Column(children: [Text("You are currently reading")])),
-            Container(width: 300, child: Column(children: getBookList())),
-          ]
-        ),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth < Breakpoints.mobile) {  // mobile layout
+            return Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
+                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: getBookList())),
+                ]
+              ),
+            );
+          }
+          else if (constraints.maxWidth < Breakpoints.tablet) {  // tablet layout
+            return Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
+                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: getBookList())),
+                ]
+              ),
+            );
+          }
+          else {
+            return Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
+                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: getBookList())),
+                ]
+              ),
+            );
+          }
+        }
       ),
       bottomNavigationBar: Container(
         height: 50,
