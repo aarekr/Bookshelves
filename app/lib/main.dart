@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'dart:ui';
+
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
+}
 
 main() {
   Get.lazyPut<BookListController>(() => BookListController());
   runApp(
     GetMaterialApp(
+      scrollBehavior: CustomScrollBehavior(),
       initialRoute: "/",
       getPages: [
         GetPage(name: "/", page: () => HomeScreen()),
