@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dart:ui';
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
@@ -43,6 +44,7 @@ class BookListController {
     var newBook = {'title': title, 'author': author, 'status': 'not started'};
     print(newBook);
     bookList.add(newBook);
+    print(bookList);
   }
 }
 
@@ -152,6 +154,18 @@ class HomeScreen extends StatelessWidget {
 }
 
 class NotStartedScreen extends StatelessWidget {
+  static final _formKey = GlobalKey<FormBuilderState>();
+  final controller = Get.find<BookListController>();
+  _submit() {
+    print("submitataan");
+    if (_formKey.currentState!.saveAndValidate()) {
+      var title = _formKey.currentState?.value["title"];
+      var author = _formKey.currentState?.value["author"];
+      controller.add(title, author);
+      _formKey.currentState?.reset();
+    }
+    Get.back();
+  }
   var booklist = [
     Card(
       child: ListTile(
@@ -173,7 +187,43 @@ class NotStartedScreen extends StatelessWidget {
     return Scaffold(
       body: Column(children: [
         Center(child: Text("Not Started Screen")),
-        FormWidget(),
+        FormBuilder(
+          key: _formKey,
+          child: Column(
+            children: [
+              FormBuilderTextField(
+                name: 'title',
+                decoration: InputDecoration(
+                  hintText: 'title',
+                  border: OutlineInputBorder(),
+                ),
+                autovalidateMode: AutovalidateMode.always,
+                validator: FormBuilderValidators.compose(
+                  [
+                    FormBuilderValidators.required(),
+                  ],
+                ),
+              ),
+              FormBuilderTextField(
+                name: 'author',
+                decoration: InputDecoration(
+                  hintText: 'author',
+                  border: OutlineInputBorder(),
+                ),
+                autovalidateMode: AutovalidateMode.always,
+                validator: FormBuilderValidators.compose(
+                  [
+                    FormBuilderValidators.required(),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: _submit,
+                child: Text("Save"),
+              ),
+            ]
+          )
+        ),
         const Divider(),
         Column(children: booklist),
         OutlinedButton(
@@ -211,66 +261,6 @@ class CompletedScreen extends StatelessWidget {
           onPressed: () => Get.to(() => HomeScreen()),
         ),
       ])
-    );
-  }
-}
-
-class FormWidget extends StatelessWidget {
-  static final _formKey = GlobalKey<FormBuilderState>();
-  final bookListController = Get.find<BookListController>();
-  _add() {
-    _formKey.currentState!.saveAndValidate();
-    print(_formKey.currentState!.value);
-    var title = _formKey.currentState?.value["title"];
-    var author = _formKey.currentState?.value["author"];
-    bookListController.add(title, author);
-  }
-  _cancel() {
-    _formKey.currentState?.reset();
-  }
-  @override
-  Widget build(BuildContext context) {
-    return FormBuilder(
-      key: _formKey,
-      child: Column(
-        children: [
-          Text("Add new book to reading list"),
-          FormBuilderTextField(
-            name: 'title',
-            decoration: InputDecoration(
-              hintText: 'Title',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          FormBuilderTextField(
-            name: 'author',
-            decoration: InputDecoration(
-              hintText: 'Author',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          FormBuilderCheckbox(
-            name: 'checkbox',
-            title: Text("Checkbox"),
-          ),
-          FormBuilderSwitch(
-            name: 'switch',
-            title: Text("Switch"),
-          ),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: _add,
-                child: Text("Add book"),
-              ),
-              ElevatedButton(
-                onPressed: _cancel,
-                child: Text("Cancel"),
-              ),
-            ],
-          )
-        ],
-      ),
     );
   }
 }
