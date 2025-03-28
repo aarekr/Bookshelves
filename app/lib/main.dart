@@ -3,6 +3,11 @@ import 'package:get/get.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dart:ui';
+//import 'package:hive_ce_flutter/hive_flutter.dart';
+//import 'package:hive_ce/hive.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -12,7 +17,9 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
   };
 }
 
-main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+  await Hive.openBox("storage");
   Get.lazyPut<BookListController>(() => BookListController());
   runApp(
     GetMaterialApp(
@@ -34,30 +41,28 @@ class Breakpoints {
 }
 
 class BookListController {
-  var bookList = [
+  final storage = Hive.box("storage");
+  RxList bookList;
+  BookListController() : bookList = [].obs {
+      bookList.value = storage.get('bookList') ?? [];
+    }
+  /*var bookList = [
     {'title': 'Book 1', 'author': 'Author 1', 'status': 'not started'},
     {'title': 'Book 2', 'author': 'Author 2', 'status': 'reading'},
     {'title': 'Book 3', 'author': 'Author 3', 'status': 'completed'},
-  ].obs;
+  ].obs;*/
   void add(String title, String author) {
     print("new book:");
     var newBook = {'title': title, 'author': author, 'status': 'not started'};
     print(newBook);
     bookList.add(newBook);
     print(bookList);
+    storage.put('bookList', bookList);
   }
 }
 
 class HomeScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
-  List<Obx> getBookList() {
-    var bookList = [
-                    Obx(() => Text('${controller.bookList[0]['title']} : ${controller.bookList[0]['author']}')),
-                    Obx(() => Text('${controller.bookList[1]['title']} : ${controller.bookList[1]['author']}')),
-                    Obx(() => Text('${controller.bookList[2]['title']} : ${controller.bookList[2]['author']}')),
-                  ];
-    return bookList;
-  }
   int getNumberOfCompletedBooks() {
     int number = 0;
     for (var i=0; i<controller.bookList.length; i++) {
@@ -94,7 +99,6 @@ class HomeScreen extends StatelessWidget {
                   Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
                   Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
                   Container(width: 300, child: Column(children: [Text("You are currently reading")])),
-                  Container(width: 300, child: Column(children: getBookList())),
                 ]
               ),
             );
@@ -108,7 +112,6 @@ class HomeScreen extends StatelessWidget {
                   Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
                   Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
                   Container(width: 300, child: Column(children: [Text("You are currently reading")])),
-                  Container(width: 300, child: Column(children: getBookList())),
                 ]
               ),
             );
@@ -122,7 +125,10 @@ class HomeScreen extends StatelessWidget {
                   Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
                   Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
                   Container(width: 300, child: Column(children: [Text("You are currently reading")])),
-                  Container(width: 300, child: Column(children: getBookList())),
+                  Obx(() => Column(
+                      children: controller.bookList.map((book) => Text(book["title"])).toList(),
+                    )
+                  ),
                 ]
               ),
             );
@@ -157,14 +163,12 @@ class NotStartedScreen extends StatelessWidget {
   static final _formKey = GlobalKey<FormBuilderState>();
   final controller = Get.find<BookListController>();
   _submit() {
-    print("submitataan");
     if (_formKey.currentState!.saveAndValidate()) {
       var title = _formKey.currentState?.value["title"];
       var author = _formKey.currentState?.value["author"];
       controller.add(title, author);
       _formKey.currentState?.reset();
     }
-    Get.back();
   }
   var booklist = [
     Card(
