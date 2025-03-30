@@ -170,27 +170,12 @@ class NotStartedScreen extends StatelessWidget {
       _formKey.currentState?.reset();
     }
   }
-  var booklist = [
-    Card(
-      child: ListTile(
-        //leading: Icon(Icons.),
-        title: Text("Clean Code"),
-        subtitle: Text("Robert C. Martin"),
-      ),
-    ),
-    Card(
-      child: ListTile(
-        //leading: Icon(Icons.),
-        title: Text("The Firm"),
-        subtitle: Text("John Grisham"),
-      ),
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Center(child: Text("Not Started Screen")),
+        Center(child: Text("New books", style: TextStyle(height: 3, fontSize: 30))),
+        Text("Add a new book to reading list"),
         FormBuilder(
           key: _formKey,
           child: Column(
@@ -229,7 +214,12 @@ class NotStartedScreen extends StatelessWidget {
           )
         ),
         const Divider(),
-        Column(children: booklist),
+        Text("Book on readinglist"),
+        Column(children: controller.bookList.map((book) => 
+          book['status'] == 'not started' 
+            ? Card(child: ListTile(title: Text(book["title"]), subtitle: Text(book["author"])))
+            : Text("")).toList()
+        ),
         OutlinedButton(
           child: Text("Back to Home Screen"),
           onPressed: () => Get.to(() => HomeScreen()),
