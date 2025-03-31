@@ -251,11 +251,17 @@ class ReadingScreen extends StatelessWidget {
 }
 
 class CompletedScreen extends StatelessWidget {
+  final controller = Get.find<BookListController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Center(child: Text("Completed Screen")),
+        Center(child: Text("Completed books", style: TextStyle(height: 3, fontSize: 30))),
+        Column(children: controller.bookList.map((book) => 
+          book['status'] == 'completed' 
+            ? Card(child: ListTile(title: Text(book["title"]), subtitle: Text(book["author"])))
+            : Text("")).toList()
+        ),
         OutlinedButton(
           child: Text("Back to Home Screen"),
           onPressed: () => Get.to(() => HomeScreen()),
