@@ -58,6 +58,16 @@ class BookListController {
     bookList.add(newBook);
     print(bookList);
     storage.put('bookList', bookList);
+    Get.to(() => HomeScreen());
+  }
+  void _save() {
+    storage.put('bookList', bookList.map((book) => book).toList());
+    Get.to(() => HomeScreen());
+  }
+  void delete(book) {
+    bookList.remove(book);
+    bookList.refresh();
+    _save();
   }
 }
 
@@ -217,7 +227,16 @@ class NotStartedScreen extends StatelessWidget {
         Text("Book on readinglist"),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
-            ? Card(child: ListTile(title: Text(book["title"]), subtitle: Text(book["author"])))
+            ? Card(child: ListTile(
+                title: Text(book["title"]), 
+                subtitle: Text(book["author"]),
+                trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          controller.delete(book);
+                        },
+                      ),
+              ))
             : Text("")).toList()
         ),
         OutlinedButton(
