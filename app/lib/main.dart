@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dart:ui';
-//import 'package:hive_ce_flutter/hive_flutter.dart';
-//import 'package:hive_ce/hive.dart';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 
@@ -43,27 +40,23 @@ class Breakpoints {
 class BookListController {
   final storage = Hive.box("storage");
   RxList bookList;
+
   BookListController() : bookList = [].obs {
-      bookList.value = storage.get('bookList') ?? [];
-    }
-  /*var bookList = [
-    {'title': 'Book 1', 'author': 'Author 1', 'status': 'not started'},
-    {'title': 'Book 2', 'author': 'Author 2', 'status': 'reading'},
-    {'title': 'Book 3', 'author': 'Author 3', 'status': 'completed'},
-  ].obs;*/
+    bookList.value = storage.get('bookList') ?? [];
+  }
+
   void add(String title, String author) {
-    print("new book:");
     var newBook = {'title': title, 'author': author, 'status': 'not started'};
-    print(newBook);
     bookList.add(newBook);
-    print(bookList);
     storage.put('bookList', bookList);
     Get.to(() => HomeScreen());
   }
+
   void _save() {
     storage.put('bookList', bookList.map((book) => book).toList());
     Get.to(() => HomeScreen());
   }
+
   void delete(book) {
     bookList.remove(book);
     bookList.refresh();
@@ -73,6 +66,7 @@ class BookListController {
 
 class HomeScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
+
   int getNumberOfCompletedBooks() {
     int number = 0;
     for (var i=0; i<controller.bookList.length; i++) {
@@ -82,6 +76,7 @@ class HomeScreen extends StatelessWidget {
     }
     return number;
   }
+
   int getNumberOfBooksToRead() {
     int number = 0;
     for (var i=0; i<controller.bookList.length; i++) {
@@ -91,6 +86,7 @@ class HomeScreen extends StatelessWidget {
     }
     return number;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,14 +168,14 @@ class HomeScreen extends StatelessWidget {
 class NotStartedScreen extends StatelessWidget {
   static final _formKey = GlobalKey<FormBuilderState>();
   final controller = Get.find<BookListController>();
+
   _submit() {
     if (_formKey.currentState!.saveAndValidate()) {
-      var title = _formKey.currentState?.value["title"];
-      var author = _formKey.currentState?.value["author"];
-      controller.add(title, author);
+      controller.add(_formKey.currentState?.value["title"], _formKey.currentState?.value["author"]);
       _formKey.currentState?.reset();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,11 +193,7 @@ class NotStartedScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
                 autovalidateMode: AutovalidateMode.always,
-                validator: FormBuilderValidators.compose(
-                  [
-                    FormBuilderValidators.required(),
-                  ],
-                ),
+                validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
               ),
               FormBuilderTextField(
                 name: 'author',
@@ -210,11 +202,7 @@ class NotStartedScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
                 autovalidateMode: AutovalidateMode.always,
-                validator: FormBuilderValidators.compose(
-                  [
-                    FormBuilderValidators.required(),
-                  ],
-                ),
+                validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
               ),
               ElevatedButton(
                 onPressed: _submit,
@@ -224,18 +212,16 @@ class NotStartedScreen extends StatelessWidget {
           )
         ),
         const Divider(),
-        Text("Book on readinglist"),
+        Text("Books on readinglist"),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
             ? Card(child: ListTile(
                 title: Text(book["title"]), 
                 subtitle: Text(book["author"]),
                 trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          controller.delete(book);
-                        },
-                      ),
+                  icon: Icon(Icons.delete),
+                  onPressed: () => controller.delete(book),
+                ),
               ))
             : Text("")).toList()
         ),
@@ -250,6 +236,7 @@ class NotStartedScreen extends StatelessWidget {
 
 class ReadingScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -271,6 +258,7 @@ class ReadingScreen extends StatelessWidget {
 
 class CompletedScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
