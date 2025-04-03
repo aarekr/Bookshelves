@@ -57,6 +57,17 @@ class BookListController {
     Get.to(() => HomeScreen());
   }
 
+  void start(book) {
+    for (var i=0; i<bookList.length; i++) {
+      print("${bookList[i]}, ${book}, ${bookList[i] == book}");
+      if (bookList[i] == book) {
+        bookList[i]["status"] = "reading";
+      }
+    }
+    bookList.refresh();
+    _save();
+  }
+
   void delete(book) {
     bookList.remove(book);
     bookList.refresh();
@@ -216,6 +227,10 @@ class NotStartedScreen extends StatelessWidget {
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
             ? Card(child: ListTile(
+                leading: ElevatedButton(
+                  onPressed: () => controller.start(book),
+                  child: Text("Start reading"),
+                ),
                 title: Text(book["title"]), 
                 subtitle: Text(book["author"]),
                 trailing: IconButton(
