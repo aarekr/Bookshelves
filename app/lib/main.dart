@@ -59,9 +59,20 @@ class BookListController {
 
   void start(book) {
     for (var i=0; i<bookList.length; i++) {
-      print("${bookList[i]}, ${book}, ${bookList[i] == book}");
       if (bookList[i] == book) {
         bookList[i]["status"] = "reading";
+        break;
+      }
+    }
+    bookList.refresh();
+    _save();
+  }
+
+  void complete(book) {
+    for (var i=0; i<bookList.length; i++) {
+      if (bookList[i] == book) {
+        bookList[i]["status"] = "completed";
+        break;
       }
     }
     bookList.refresh();
@@ -92,6 +103,16 @@ class HomeScreen extends StatelessWidget {
     int number = 0;
     for (var i=0; i<controller.bookList.length; i++) {
       if(controller.bookList[i]['status'] == 'not started') {
+        number++;
+      }
+    }
+    return number;
+  }
+
+  int getNumberOfReadingNow() {
+    int number = 0;
+    for (var i=0; i<controller.bookList.length; i++) {
+      if(controller.bookList[i]['status'] == 'reading') {
         number++;
       }
     }
@@ -139,9 +160,11 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
                   Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
-                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfReadingNow()}")])),
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+                  const Divider(),
+                  Container(width: 300, child: Column(children: [Text("All books")])),
                   Obx(() => Column(
                       children: controller.bookList.map((book) => Text(book["title"])).toList(),
                     )
@@ -229,7 +252,7 @@ class NotStartedScreen extends StatelessWidget {
             ? Card(child: ListTile(
                 leading: ElevatedButton(
                   onPressed: () => controller.start(book),
-                  child: Text("Start reading"),
+                  child: Text("Start"),
                 ),
                 title: Text(book["title"]), 
                 subtitle: Text(book["author"]),
@@ -259,7 +282,18 @@ class ReadingScreen extends StatelessWidget {
         Center(child: Text("You are currently reading", style: TextStyle(height: 3, fontSize: 30))),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'reading' 
-            ? Card(child: ListTile(title: Text(book["title"]), subtitle: Text(book["author"])))
+            ? Card(child: ListTile(
+                leading: ElevatedButton(
+                  onPressed: () => controller.complete(book),
+                  child: Text("Complete"),
+                ),
+                title: Text(book["title"]),
+                subtitle: Text(book["author"]),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => controller.delete(book),
+                ),
+              ))
             : Text("")).toList()
         ),
         OutlinedButton(
