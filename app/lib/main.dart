@@ -89,30 +89,10 @@ class BookListController {
 class HomeScreen extends StatelessWidget {
   final controller = Get.find<BookListController>();
 
-  int getNumberOfCompletedBooks() {
+  int getNumberOfBooksWithStatus(String status) {
     int number = 0;
     for (var i=0; i<controller.bookList.length; i++) {
-      if(controller.bookList[i]['status'] == 'completed') {
-        number++;
-      }
-    }
-    return number;
-  }
-
-  int getNumberOfBooksToRead() {
-    int number = 0;
-    for (var i=0; i<controller.bookList.length; i++) {
-      if(controller.bookList[i]['status'] == 'not started') {
-        number++;
-      }
-    }
-    return number;
-  }
-
-  int getNumberOfReadingNow() {
-    int number = 0;
-    for (var i=0; i<controller.bookList.length; i++) {
-      if(controller.bookList[i]['status'] == 'reading') {
+      if(controller.bookList[i]['status'] == status) {
         number++;
       }
     }
@@ -134,9 +114,15 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
-                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
-                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
+                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
+                  const Divider(),
+                  Container(width: 300, child: Column(children: [Text("All books")])),
+                  Obx(() => Column(
+                      children: controller.bookList.map((book) => Text(book["title"])).toList(),
+                    )
+                  ),
                 ]
               ),
             );
@@ -147,9 +133,15 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
-                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
-                  Container(width: 300, child: Column(children: [Text("You are currently reading")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
+                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
+                  const Divider(),
+                  Container(width: 300, child: Column(children: [Text("All books")])),
+                  Obx(() => Column(
+                      children: controller.bookList.map((book) => Text(book["title"])).toList(),
+                    )
+                  ),
                 ]
               ),
             );
@@ -160,9 +152,9 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksToRead()}")])),
-                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfReadingNow()}")])),
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfCompletedBooks()}")])),
+                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
+                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
+                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
                   const Divider(),
                   Container(width: 300, child: Column(children: [Text("All books")])),
                   Obx(() => Column(
