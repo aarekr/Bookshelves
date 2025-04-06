@@ -307,7 +307,18 @@ class CompletedScreen extends StatelessWidget {
         Center(child: Text("Completed books", style: TextStyle(height: 3, fontSize: 30))),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'completed' 
-            ? Card(child: ListTile(title: Text(book["title"]), subtitle: Text(book["author"])))
+            ? Card(child: ListTile(
+                leading: ElevatedButton(
+                  onPressed: () => controller.start(book),
+                  child: Text("Reset"),
+                ),
+                title: Text(book["title"]),
+                subtitle: Text(book["author"]),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => controller.delete(book),
+                ),
+              ))
             : Text("")).toList()
         ),
         OutlinedButton(
