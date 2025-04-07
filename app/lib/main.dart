@@ -45,8 +45,9 @@ class BookListController {
     bookList.value = storage.get('bookList') ?? [];
   }
 
-  void add(String title, String author) {
-    var newBook = {'title': title, 'author': author, 'status': 'not started'};
+  void add(String title, String author, String language) {
+    var newBook = {'title': title, 'author': author, 'language': language, 'status': 'not started'};
+    print("newBook: ${newBook}");
     bookList.add(newBook);
     storage.put('bookList', bookList);
     Get.to(() => HomeScreen());
@@ -197,7 +198,9 @@ class NotStartedScreen extends StatelessWidget {
 
   _submit() {
     if (_formKey.currentState!.saveAndValidate()) {
-      controller.add(_formKey.currentState?.value["title"], _formKey.currentState?.value["author"]);
+      controller.add(_formKey.currentState?.value["title"],
+                      _formKey.currentState?.value["author"],
+                      _formKey.currentState?.value["language"]);
       _formKey.currentState?.reset();
     }
   }
@@ -230,6 +233,14 @@ class NotStartedScreen extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.always,
                 validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
               ),
+              FormBuilderRadioGroup(
+                decoration: InputDecoration(labelText: 'Book language'),
+                name: 'language',
+                validator: FormBuilderValidators.required(),
+                options: ['Finnish', 'Swedish', 'English']
+                  .map((lang) => FormBuilderFieldOption(value: lang))
+                  .toList(growable: false),
+              ),
               ElevatedButton(
                 onPressed: _submit,
                 child: Text("Save"),
@@ -256,7 +267,7 @@ class NotStartedScreen extends StatelessWidget {
             : Text("")).toList()
         ),
         OutlinedButton(
-          child: Text("Back to Home Screen"),
+          child: Text("Home"),
           onPressed: () => Get.to(() => HomeScreen()),
         ),
       ])
@@ -289,7 +300,7 @@ class ReadingScreen extends StatelessWidget {
             : Text("")).toList()
         ),
         OutlinedButton(
-          child: Text("Back to Home Screen"),
+          child: Text("Home"),
           onPressed: () => Get.to(() => HomeScreen()),
         ),
       ])
@@ -322,7 +333,7 @@ class CompletedScreen extends StatelessWidget {
             : Text("")).toList()
         ),
         OutlinedButton(
-          child: Text("Back to Home Screen"),
+          child: Text("Home"),
           onPressed: () => Get.to(() => HomeScreen()),
         ),
       ])
