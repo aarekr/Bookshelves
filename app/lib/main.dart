@@ -153,13 +153,14 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(width: 300, child: Column(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 20))])),
                   Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
                   Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
                   Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
                   const Divider(),
-                  Container(width: 300, child: Column(children: [Text("All books")])),
+                  Container(width: 300, child: Column(children: [Text("All books", style: TextStyle(height: 3, fontSize: 20))])),
                   Obx(() => Column(
-                      children: controller.bookList.map((book) => Text(book["title"])).toList(),
+                      children: controller.bookList.map((book) => Text(book["title"] + " : " + book["author"])).toList(),
                     )
                   ),
                 ]
@@ -210,7 +211,7 @@ class NotStartedScreen extends StatelessWidget {
     return Scaffold(
       body: Column(children: [
         Center(child: Text("New books", style: TextStyle(height: 3, fontSize: 30))),
-        Text("Add a new book to reading list"),
+        Text("Add a new book to reading list", style: TextStyle(height: 3, fontSize: 20)),
         FormBuilder(
           key: _formKey,
           child: Column(
@@ -249,7 +250,7 @@ class NotStartedScreen extends StatelessWidget {
           )
         ),
         const Divider(),
-        Text("Books on readinglist"),
+        Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
             ? Card(child: ListTile(
