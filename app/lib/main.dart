@@ -112,26 +112,21 @@ class HomeScreen extends StatelessWidget {
           if (constraints.maxWidth < Breakpoints.mobile) {  // mobile layout
             return Container(
               alignment: Alignment.center,
+              margin: const EdgeInsets.all(40),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 300, child: Column(children: [
-                    Text("Statistics", style: TextStyle(height: 3, fontSize: 30))])),
-                  Container(width: 300, child: Column(children: [
-                    Text("Books to read: ${getNumberOfBooksWithStatus('not started')}", style: TextStyle(height: 1.2, fontSize: 20))])),
-                  Container(width: 300, child: Column(children: [
-                    Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}", style: TextStyle(height: 1.2, fontSize: 20))])),
-                  Container(width: 300, child: Column(children: [
-                    Text("You have read: ${getNumberOfBooksWithStatus('completed')}", style: TextStyle(height: 1.2, fontSize: 20))])),
-                  const Divider(),
-                  Container(width: 300, child: Column(children: [
-                    Text("All books", style: TextStyle(height: 2, fontSize: 25))])),
-                  Obx(() => Column(
-                      children: controller.bookList.map((book) => 
-                        Text(book["title"] + " : " + book["author"], style: TextStyle(height: 1.2, fontSize: 18))).toList(),
-                    )
-                  ),
-                  Text("Mobile"),
+                  Row(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 30))]),
+                  Row(children: [Text("Books to read: ", style: TextStyle(height: 1.2, fontSize: 20)),
+                    Text("${getNumberOfBooksWithStatus('not started')}", style: TextStyle(height: 1.2, fontSize: 20))
+                  ]),
+                  Row(children: [Text("Reading now  : ", style: TextStyle(height: 1.2, fontSize: 20)),
+                    Text("${getNumberOfBooksWithStatus('reading')}", style: TextStyle(height: 1.2, fontSize: 20))
+                  ]),
+                  Row(children: [Text("You have read: ", style: TextStyle(height: 1.2, fontSize: 20)),
+                    Text("${getNumberOfBooksWithStatus('completed')}", style: TextStyle(height: 1.2, fontSize: 20))
+                  ]),
                 ]
               ),
             );
@@ -139,19 +134,21 @@ class HomeScreen extends StatelessWidget {
           else if (constraints.maxWidth < Breakpoints.tablet) {  // tablet layout
             return Container(
               alignment: Alignment.center,
+              margin: const EdgeInsets.all(50),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 20))])),
-                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
-                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
-                  const Divider(),
-                  Container(width: 300, child: Column(children: [Text("All books", style: TextStyle(height: 3, fontSize: 20))])),
-                  Obx(() => Column(
-                      children: controller.bookList.map((book) => Text(book["title"] + " : " + book["author"])).toList(),
-                    )
-                  ),
+                  Row(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 35))]),
+                  Row(children: [Text("Books to read: ", style: TextStyle(height: 1.2, fontSize: 23)),
+                    Text("${getNumberOfBooksWithStatus('not started')}", style: TextStyle(height: 1.2, fontSize: 23))
+                  ]),
+                  Row(children: [Text("Reading now  : ", style: TextStyle(height: 1.2, fontSize: 23)),
+                    Text("${getNumberOfBooksWithStatus('reading')}", style: TextStyle(height: 1.2, fontSize: 23))
+                  ]),
+                  Row(children: [Text("You have read: ", style: TextStyle(height: 1.2, fontSize: 23)),
+                    Text("${getNumberOfBooksWithStatus('completed')}", style: TextStyle(height: 1.2, fontSize: 23))
+                  ]),
                 ]
               ),
             );
@@ -159,19 +156,21 @@ class HomeScreen extends StatelessWidget {
           else {
             return Container(
               alignment: Alignment.center,
+              margin: const EdgeInsets.all(60),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 300, child: Column(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 20))])),
-                  Container(width: 300, child: Column(children: [Text("Books to read: ${getNumberOfBooksWithStatus('not started')}")])),
-                  Container(width: 300, child: Column(children: [Text("Reading now  : ${getNumberOfBooksWithStatus('reading')}")])),
-                  Container(width: 300, child: Column(children: [Text("You have read: ${getNumberOfBooksWithStatus('completed')}")])),
-                  const Divider(),
-                  Container(width: 300, child: Column(children: [Text("All books", style: TextStyle(height: 3, fontSize: 20))])),
-                  Obx(() => Column(
-                      children: controller.bookList.map((book) => Text(book["title"] + " : " + book["author"])).toList(),
-                    )
-                  ),
+                  Row(children: [Text("Statistics", style: TextStyle(height: 3, fontSize: 40))]),
+                  Row(children: [Text("Books to read: ", style: TextStyle(height: 1.2, fontSize: 25)),
+                    Text("${getNumberOfBooksWithStatus('not started')}", style: TextStyle(height: 1.2, fontSize: 25))
+                  ]),
+                  Row(children: [Text("Reading now  : ", style: TextStyle(height: 1.2, fontSize: 25)),
+                    Text("${getNumberOfBooksWithStatus('reading')}", style: TextStyle(height: 1.2, fontSize: 25))
+                  ]),
+                  Row(children: [Text("You have read: ", style: TextStyle(height: 1.2, fontSize: 25)),
+                    Text("${getNumberOfBooksWithStatus('completed')}", style: TextStyle(height: 1.2, fontSize: 25))
+                  ]),
                 ]
               ),
             );
