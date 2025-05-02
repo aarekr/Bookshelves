@@ -217,8 +217,8 @@ class NotStartedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Center(child: Text("New books", style: TextStyle(height: 3, fontSize: 30))),
+      body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Text("New books", style: TextStyle(height: 3, fontSize: 30)),
         Text("Add a new book to reading list", style: TextStyle(height: 3, fontSize: 20)),
         FormBuilder(
           key: _formKey,
@@ -267,7 +267,7 @@ class NotStartedScreen extends StatelessWidget {
                   child: Text("Start"),
                 ),
                 title: Text(book["title"]), 
-                subtitle: Text(book["author"]),
+                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () => controller.delete(book),
@@ -300,7 +300,7 @@ class ReadingScreen extends StatelessWidget {
                   child: Text("Complete"),
                 ),
                 title: Text(book["title"]),
-                subtitle: Text(book["author"]),
+                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () => controller.delete(book),
@@ -333,7 +333,7 @@ class CompletedScreen extends StatelessWidget {
                   child: Text("Reset"),
                 ),
                 title: Text(book["title"]),
-                subtitle: Text(book["author"]),
+                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () => controller.delete(book),
