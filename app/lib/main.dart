@@ -50,12 +50,12 @@ class BookListController {
     print("newBook: ${newBook}");
     bookList.add(newBook);
     storage.put('bookList', bookList);
-    Get.to(() => HomeScreen());
+    Get.to(() => NotStartedScreen());
   }
 
   void _save() {
     storage.put('bookList', bookList.map((book) => book).toList());
-    Get.to(() => HomeScreen());
+    bookList.refresh();
   }
 
   void start(book) {
@@ -67,6 +67,7 @@ class BookListController {
     }
     bookList.refresh();
     _save();
+    Get.to(() => ReadingScreen());
   }
 
   void complete(book) {
@@ -78,12 +79,14 @@ class BookListController {
     }
     bookList.refresh();
     _save();
+    Get.to(() => CompletedScreen());
   }
 
   void delete(book) {
     bookList.remove(book);
     bookList.refresh();
     _save();
+    Get.to(() => HomeScreen());
   }
 }
 
