@@ -24,6 +24,7 @@ Future<void> main() async {
       initialRoute: "/",
       getPages: [
         GetPage(name: "/", page: () => HomeScreen()),
+        GetPage(name: "/addbook", page: () => AddBookScreen()),
         GetPage(name: "/notstarted", page: () => NotStartedScreen()),
         GetPage(name: "/reading", page: () => ReadingScreen()),
         GetPage(name: "/completed", page: () => CompletedScreen()),
@@ -186,6 +187,10 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
+              child: Text("Add Book"),
+              onPressed: () => Get.to(() => AddBookScreen()),
+            ),
+            OutlinedButton(
               child: Text("Not Started"),
               onPressed: () => Get.to(() => NotStartedScreen()),
             ),
@@ -204,7 +209,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class NotStartedScreen extends StatelessWidget {
+class AddBookScreen extends StatelessWidget {
   static final _formKey = GlobalKey<FormBuilderState>();
   final controller = Get.find<BookListController>();
 
@@ -249,7 +254,7 @@ class NotStartedScreen extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Book language'),
                 name: 'language',
                 validator: FormBuilderValidators.required(),
-                options: ['Finnish', 'Swedish', 'English']
+                options: ['Finnish', 'Swedish', 'English', 'Norwegian', 'German']
                   .map((lang) => FormBuilderFieldOption(value: lang))
                   .toList(growable: false),
               ),
@@ -261,6 +266,38 @@ class NotStartedScreen extends StatelessWidget {
           )
         ),
         const Divider(),
+        Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
+        Column(children: controller.bookList.map((book) => 
+          book['status'] == 'not started' 
+            ? Card(child: ListTile(
+                leading: ElevatedButton(
+                  onPressed: () => controller.start(book),
+                  child: Text("Start"),
+                ),
+                title: Text(book["title"]), 
+                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => controller.delete(book),
+                ),
+              ))
+            : Text("")).toList()
+        ),
+        OutlinedButton(
+          child: Text("Home"),
+          onPressed: () => Get.to(() => HomeScreen()),
+        ),
+      ])
+    );
+  }
+}
+
+class NotStartedScreen extends StatelessWidget {
+  final controller = Get.find<BookListController>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
