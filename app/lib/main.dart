@@ -194,7 +194,7 @@ class HomeScreen extends StatelessWidget {
               child: Text("Not Started"),
               onPressed: () => Get.to(() => NotStartedScreen()),
             ),
-            ElevatedButton(
+            OutlinedButton(
               child: Text("Reading"),
               onPressed: () => Get.to(() => ReadingScreen()),
             ),
@@ -265,7 +265,7 @@ class AddBookScreen extends StatelessWidget {
             ]
           )
         ),
-        const Divider(),
+        /*const Divider(),
         Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
         Column(children: controller.bookList.map((book) => 
           book['status'] == 'not started' 
@@ -282,12 +282,24 @@ class AddBookScreen extends StatelessWidget {
                 ),
               ))
             : Text("")).toList()
+        ),*/
+      ]),
+      bottomNavigationBar: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              child: Text("Home"),
+              onPressed: () => Get.to(() => HomeScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Not Started"),
+              onPressed: () => Get.to(() => NotStartedScreen()),
+            ),
+          ]
         ),
-        OutlinedButton(
-          child: Text("Home"),
-          onPressed: () => Get.to(() => HomeScreen()),
-        ),
-      ])
+      ),
     );
   }
 }
@@ -315,11 +327,27 @@ class NotStartedScreen extends StatelessWidget {
               ))
             : Text("")).toList()
         ),
-        OutlinedButton(
-          child: Text("Home"),
-          onPressed: () => Get.to(() => HomeScreen()),
+      ]),
+      bottomNavigationBar: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              child: Text("Home"),
+              onPressed: () => Get.to(() => HomeScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Reading"),
+              onPressed: () => Get.to(() => ReadingScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Completed"),
+              onPressed: () => Get.to(() => CompletedScreen()),
+            ),
+          ]
         ),
-      ])
+      ),
     );
   }
 }
@@ -330,29 +358,53 @@ class ReadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Center(child: Text("You are currently reading", style: TextStyle(height: 3, fontSize: 30))),
-        Column(children: controller.bookList.map((book) => 
-          book['status'] == 'reading' 
-            ? Card(child: ListTile(
-                leading: ElevatedButton(
-                  onPressed: () => controller.complete(book),
-                  child: Text("Complete"),
-                ),
-                title: Text(book["title"]),
-                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => controller.delete(book),
-                ),
-              ))
-            : Text("")).toList()
+      body: Container(
+        alignment: Alignment.center,
+        width: 800,
+        child: Column(children: [
+          Center(child: Text("You are currently reading", style: TextStyle(height: 3, fontSize: 30))),
+          Column(children: controller.bookList.map((book) => 
+            book['status'] == 'reading' 
+              ? Card(child: ListTile(
+                  leading: ElevatedButton(
+                    onPressed: () => controller.complete(book),
+                    child: Text("Complete"),
+                  ),
+                  title: Text(book["title"]),
+                  subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => controller.delete(book),
+                  ),
+                ))
+              : Text("")).toList()
+          ),
+        ]),
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              child: Text("Home"),
+              onPressed: () => Get.to(() => HomeScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Add Book"),
+              onPressed: () => Get.to(() => AddBookScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Not Started"),
+              onPressed: () => Get.to(() => NotStartedScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Completed"),
+              onPressed: () => Get.to(() => CompletedScreen()),
+            ),
+          ]
         ),
-        OutlinedButton(
-          child: Text("Home"),
-          onPressed: () => Get.to(() => HomeScreen()),
-        ),
-      ])
+      ),
     );
   }
 }
@@ -381,11 +433,27 @@ class CompletedScreen extends StatelessWidget {
               ))
             : Text("")).toList()
         ),
-        OutlinedButton(
-          child: Text("Home"),
-          onPressed: () => Get.to(() => HomeScreen()),
+      ]),
+      bottomNavigationBar: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              child: Text("Home"),
+              onPressed: () => Get.to(() => HomeScreen()),
+            ),
+            OutlinedButton(
+              child: Text("Not Started"),
+              onPressed: () => Get.to(() => NotStartedScreen()),
+            ),
+            ElevatedButton(
+              child: Text("Reading"),
+              onPressed: () => Get.to(() => ReadingScreen()),
+            ),
+          ]
         ),
-      ])
+      ),
     );
   }
 }
