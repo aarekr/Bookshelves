@@ -157,8 +157,9 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           }
-          else {
+          else {  // large screen layout
             return Container(
+              constraints: BoxConstraints(maxWidth: 800),
               alignment: Alignment.center,
               margin: const EdgeInsets.all(60),
               child: Column(
@@ -225,65 +226,52 @@ class AddBookScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Text("New books", style: TextStyle(height: 3, fontSize: 30)),
-        Text("Add a new book to reading list", style: TextStyle(height: 3, fontSize: 20)),
-        FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              FormBuilderTextField(
-                name: 'title',
-                decoration: InputDecoration(
-                  hintText: 'title',
-                  border: OutlineInputBorder(),
-                ),
-                autovalidateMode: AutovalidateMode.always,
-                validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
-              ),
-              FormBuilderTextField(
-                name: 'author',
-                decoration: InputDecoration(
-                  hintText: 'author',
-                  border: OutlineInputBorder(),
-                ),
-                autovalidateMode: AutovalidateMode.always,
-                validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
-              ),
-              FormBuilderRadioGroup(
-                decoration: InputDecoration(labelText: 'Book language'),
-                name: 'language',
-                validator: FormBuilderValidators.required(),
-                options: ['Finnish', 'Swedish', 'English', 'Norwegian', 'German']
-                  .map((lang) => FormBuilderFieldOption(value: lang))
-                  .toList(growable: false),
-              ),
-              ElevatedButton(
-                onPressed: _submit,
-                child: Text("Save"),
-              ),
-            ]
-          )
-        ),
-        /*const Divider(),
-        Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
-        Column(children: controller.bookList.map((book) => 
-          book['status'] == 'not started' 
-            ? Card(child: ListTile(
-                leading: ElevatedButton(
-                  onPressed: () => controller.start(book),
-                  child: Text("Start"),
-                ),
-                title: Text(book["title"]), 
-                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => controller.delete(book),
-                ),
-              ))
-            : Text("")).toList()
-        ),*/
-      ]),
+      body: Center(child:
+        Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Column(children: [
+            Text("New books", style: TextStyle(height: 3, fontSize: 30)),
+            Text("Add a new book to reading list", style: TextStyle(height: 3, fontSize: 20)),
+            FormBuilder(
+              key: _formKey,
+              child: Column(
+                children: [
+                  FormBuilderTextField(
+                    name: 'title',
+                    decoration: InputDecoration(
+                      hintText: 'title',
+                      border: OutlineInputBorder(),
+                    ),
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
+                  ),
+                  FormBuilderTextField(
+                    name: 'author',
+                    decoration: InputDecoration(
+                      hintText: 'author',
+                      border: OutlineInputBorder(),
+                    ),
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: FormBuilderValidators.compose([FormBuilderValidators.required()]),
+                  ),
+                  FormBuilderRadioGroup(
+                    decoration: InputDecoration(labelText: 'Book language'),
+                    name: 'language',
+                    validator: FormBuilderValidators.required(),
+                    options: ['Finnish', 'Swedish', 'English', 'Norwegian', 'German']
+                      .map((lang) => FormBuilderFieldOption(value: lang))
+                      .toList(growable: false),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submit,
+                    child: Text("Save"),
+                  ),
+                ]
+              )
+            ),
+          ])
+        )
+      ),
       bottomNavigationBar: Container(
         height: 50,
         child: Row(
@@ -309,25 +297,30 @@ class NotStartedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Text("Books on reading list", style: TextStyle(height: 3, fontSize: 20)),
-        Column(children: controller.bookList.map((book) => 
-          book['status'] == 'not started' 
-            ? Card(child: ListTile(
-                leading: ElevatedButton(
-                  onPressed: () => controller.start(book),
-                  child: Text("Start"),
-                ),
-                title: Text(book["title"]), 
-                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => controller.delete(book),
-                ),
-              ))
-            : Text("")).toList()
-        ),
-      ]),
+      body: Center(child:
+        Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Column(children: [
+            Text("Books on reading list", style: TextStyle(height: 3, fontSize: 30)),
+            Column(children: controller.bookList.map((book) => 
+              book['status'] == 'not started' 
+                ? Card(child: ListTile(
+                    leading: ElevatedButton(
+                      onPressed: () => controller.start(book),
+                      child: Text("Start"),
+                    ),
+                    title: Text(book["title"]), 
+                    subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => controller.delete(book),
+                    ),
+                  ))
+                : Text("")).toList()
+            ),
+          ]),
+        )
+      ),
       bottomNavigationBar: Container(
         height: 50,
         child: Row(
@@ -358,28 +351,29 @@ class ReadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        width: 800,
-        child: Column(children: [
-          Center(child: Text("You are currently reading", style: TextStyle(height: 3, fontSize: 30))),
-          Column(children: controller.bookList.map((book) => 
-            book['status'] == 'reading' 
-              ? Card(child: ListTile(
-                  leading: ElevatedButton(
-                    onPressed: () => controller.complete(book),
-                    child: Text("Complete"),
-                  ),
-                  title: Text(book["title"]),
-                  subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => controller.delete(book),
-                  ),
-                ))
-              : Text("")).toList()
-          ),
-        ]),
+      body: Center(child:
+        Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Column(children: [
+            Center(child: Text("You are currently reading", style: TextStyle(height: 3, fontSize: 30))),
+            Column(children: controller.bookList.map((book) => 
+              book['status'] == 'reading' 
+                ? Card(child: ListTile(
+                    leading: ElevatedButton(
+                      onPressed: () => controller.complete(book),
+                      child: Text("Complete"),
+                    ),
+                    title: Text(book["title"]),
+                    subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => controller.delete(book),
+                    ),
+                  ))
+                : Text("")).toList()
+            ),
+          ]),
+        )
       ),
       bottomNavigationBar: Container(
         height: 50,
@@ -415,25 +409,30 @@ class CompletedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Center(child: Text("Completed books", style: TextStyle(height: 3, fontSize: 30))),
-        Column(children: controller.bookList.map((book) => 
-          book['status'] == 'completed' 
-            ? Card(child: ListTile(
-                leading: ElevatedButton(
-                  onPressed: () => controller.start(book),
-                  child: Text("Reset"),
-                ),
-                title: Text(book["title"]),
-                subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => controller.delete(book),
-                ),
-              ))
-            : Text("")).toList()
-        ),
-      ]),
+      body: Center(child:
+        Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Column(children: [
+            Center(child: Text("Completed books", style: TextStyle(height: 3, fontSize: 30))),
+            Column(children: controller.bookList.map((book) => 
+              book['status'] == 'completed' 
+                ? Card(child: ListTile(
+                    leading: ElevatedButton(
+                      onPressed: () => controller.start(book),
+                      child: Text("Reset"),
+                    ),
+                    title: Text(book["title"]),
+                    subtitle: Text(book["author"] + "\n(" + book["language"] + ")"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => controller.delete(book),
+                    ),
+                  ))
+                : Text("")).toList()
+            ),
+          ])
+        )
+      ),
       bottomNavigationBar: Container(
         height: 50,
         child: Row(
