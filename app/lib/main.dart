@@ -6,6 +6,16 @@ import 'dart:ui';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 
+getHomeButton() { return OutlinedButton(child: Text("Home"), onPressed: () => Get.to(() => HomeScreen())); }
+
+getAddBookButton() { return OutlinedButton(child: Text("Add Book"), onPressed: () => Get.to(() => AddBookScreen())); }
+
+getNotStartedButton() { return OutlinedButton(child: Text("Not Started"), onPressed: () => Get.to(() => NotStartedScreen())); }
+
+getReadingButton() { return OutlinedButton(child: Text("Reading"), onPressed: () => Get.to(() => ReadingScreen())); }
+
+getCompletedButton() { return OutlinedButton(child: Text("Completed"), onPressed: () => Get.to(() => CompletedScreen())); }
+
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
@@ -186,24 +196,7 @@ class HomeScreen extends StatelessWidget {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              child: Text("Add Book"),
-              onPressed: () => Get.to(() => AddBookScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Not Started"),
-              onPressed: () => Get.to(() => NotStartedScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Reading"),
-              onPressed: () => Get.to(() => ReadingScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Completed"),
-              onPressed: () => Get.to(() => CompletedScreen()),
-            ),
-          ]
+          children: [getAddBookButton(), getNotStartedButton(), getReadingButton(), getCompletedButton()],
         ),
       ),
     );
@@ -276,16 +269,7 @@ class AddBookScreen extends StatelessWidget {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              child: Text("Home"),
-              onPressed: () => Get.to(() => HomeScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Not Started"),
-              onPressed: () => Get.to(() => NotStartedScreen()),
-            ),
-          ]
+          children: [getHomeButton(), getNotStartedButton(), getReadingButton(), getCompletedButton()],
         ),
       ),
     );
@@ -325,20 +309,7 @@ class NotStartedScreen extends StatelessWidget {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              child: Text("Home"),
-              onPressed: () => Get.to(() => HomeScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Reading"),
-              onPressed: () => Get.to(() => ReadingScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Completed"),
-              onPressed: () => Get.to(() => CompletedScreen()),
-            ),
-          ]
+          children: [getHomeButton(), getAddBookButton(), getReadingButton(), getCompletedButton()],
         ),
       ),
     );
@@ -379,24 +350,7 @@ class ReadingScreen extends StatelessWidget {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              child: Text("Home"),
-              onPressed: () => Get.to(() => HomeScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Add Book"),
-              onPressed: () => Get.to(() => AddBookScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Not Started"),
-              onPressed: () => Get.to(() => NotStartedScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Completed"),
-              onPressed: () => Get.to(() => CompletedScreen()),
-            ),
-          ]
+          children: [getHomeButton(), getAddBookButton(), getNotStartedButton(), getCompletedButton()],
         ),
       ),
     );
@@ -437,20 +391,7 @@ class CompletedScreen extends StatelessWidget {
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              child: Text("Home"),
-              onPressed: () => Get.to(() => HomeScreen()),
-            ),
-            OutlinedButton(
-              child: Text("Not Started"),
-              onPressed: () => Get.to(() => NotStartedScreen()),
-            ),
-            ElevatedButton(
-              child: Text("Reading"),
-              onPressed: () => Get.to(() => ReadingScreen()),
-            ),
-          ]
+          children: [getHomeButton(), getAddBookButton(), getNotStartedButton(), getReadingButton()],
         ),
       ),
     );
