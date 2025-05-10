@@ -5,6 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dart:ui';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
+import 'pie_chart.dart';
 
 getHomeButton() { return OutlinedButton(child: Text("Home"), onPressed: () => Get.to(() => HomeScreen())); }
 
@@ -172,7 +173,7 @@ class HomeScreen extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: 800),
               alignment: Alignment.center,
               margin: const EdgeInsets.all(60),
-              child: Column(
+              child: BookPieChart(), /*Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -186,8 +187,11 @@ class HomeScreen extends StatelessWidget {
                   Row(children: [Text("You have read: ", style: TextStyle(height: 1.2, fontSize: 25)),
                     Text("${getNumberOfBooksWithStatus('completed')}", style: TextStyle(height: 1.2, fontSize: 25))
                   ]),
-                ]
-              ),
+                  Column(children: [
+                    BookPieChart(),
+                  ]),
+                ]*/
+              //),
             );
           }
         }
